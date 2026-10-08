@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0D1418">
+<title>Магистрально-модульный принцип</title>
+<meta name="description" content="Как устроен компьютер: одна общая магистраль и много модулей.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="deck.css">
+<script src="deck.js" defer></script>
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true">
+<symbol id="i-landmark" viewBox="0 0 24 24"><line x1="3" x2="21" y1="22" y2="22"/><line x1="6" x2="6" y1="18" y2="11"/><line x1="10" x2="10" y1="18" y2="11"/><line x1="14" x2="14" y1="18" y2="11"/><line x1="18" x2="18" y1="18" y2="11"/><polygon points="12 2 20 7 4 7"/></symbol>
+<symbol id="i-package" viewBox="0 0 24 24"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></symbol>
+<symbol id="i-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></symbol>
+<symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></symbol>
+<symbol id="i-gamepad" viewBox="0 0 24 24"><line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></symbol>
+<symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></symbol>
+<symbol id="i-coins" viewBox="0 0 24 24"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-car" viewBox="0 0 24 24"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></symbol>
+<symbol id="i-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+<symbol id="i-next" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-prev" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/></symbol>
+<symbol id="i-full" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+<symbol id="i-notes" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 8h8"/><path d="M8 12h5"/></symbol>
+</svg>
+
+<div class="stage">
+<main class="deck" id="deck">
+
+<!-- Введение -->
+<section class="s s--board s--cover" id="cover" data-title="Титул">
+  <p class="eyebrow" data-r="0">Информатика · Архитектура компьютера</p>
+  <h1 data-r="1">Магистрально-модульный принцип</h1>
+  <p class="lead" data-r="2">Как устроен компьютер: одна общая магистраль и много модулей</p>
+  <div class="cv" aria-hidden="true">
+    <div class="cv__mods">
+      <span class="chip" data-r="4"><span class="full">Процессор</span><span class="abbr">CPU</span></span>
+      <span class="chip" data-r="5">ОЗУ</span>
+      <span class="chip" data-r="6">ПЗУ</span>
+      <span class="chip" data-r="7"><span class="full">Видеокарта</span><span class="abbr">GPU</span></span>
+      <span class="chip" data-r="8"><span class="full">Диск</span><span class="abbr">SSD</span></span>
+    </div>
+    <div class="bus" data-r="3" data-rt="left">
+      <div class="bl k-data"></div>
+      <div class="bl k-addr"></div>
+      <div class="bl k-ctrl bl--rev"></div>
+    </div>
+  </div>
+  <details class="notes"><summary>Текст доклада</summary><p>Тема сегодняшнего доклада — магистрально-модульный принцип построения компьютера. Это основа устройства почти всех современных компьютеров: от ноутбука до сервера. Внизу — схема: модули (процессор, память, видеокарта, диск) соединены общей магистралью, по которой бегут сигналы.</p></details>
+</section>
+
+<section class="s s--paper" id="city" data-title="Компьютер как город">
+  <p class="eyebrow" data-r="0">Простыми словами</p>
+  <h2 data-r="0">Представьте компьютер как город</h2>
+  <div class="city">
+    <div class="bld" data-r="2" data-rt="pop"><svg class="ic"><use href="#i-landmark"/></svg><h3>Мэрия</h3><p>= процессор, всем управляет</p></div>
+    <div class="bld" data-r="3" data-rt="pop"><svg class="ic"><use href="#i-package"/></svg><h3>Рабочий склад</h3><p>= оперативная память</p></div>
+    <div class="bld" data-r="4" data-rt="pop"><svg class="ic"><use href="#i-archive"/></svg><h3>Архив</h3><p>= диск, хранит всё надолго</p></div>
+    <div class="bld" data-r="5" data-rt="pop"><svg class="ic"><use href="#i-monitor"/></svg><h3>Кинотеатр</h3><p>= монитор, показывает</p></div>
+  </div>
+  <div class="road" data-r="1" data-rt="left" aria-hidden="true">
+    <div class="run"><span class="car k-data">данные</span></div>
+    <div class="run run--late"><span class="car k-ctrl">команда</span></div>
+    <div class="run run--l"><span class="car k-addr">адрес</span></div>
+  </div>
+  <p class="city__cap" data-r="6"><b>Главная дорога — это магистраль.</b> Все «здания» стоят вдоль одной дороги, и по ней ездят «машины» с информацией. Нужно новое здание — просто строим его у дороги, ничего не перекладывая.</p>
+  <details class="notes"><summary>Текст доклада</summary><p>Чтобы понять принцип без технических слов, представьте город. В нём есть мэрия — это процессор, он всем управляет. Рабочий склад — оперативная память: там лежит то, с чем работают прямо сейчас. Архив — диск, где всё хранится надолго. Кинотеатр — монитор, он показывает картинку. Все здания стоят вдоль одной главной дороги — это и есть магистраль. По ней ездят машины с информацией. А если городу нужно новое здание, его просто строят у дороги — так же к компьютеру добавляют новое устройство.</p></details>
+</section>
+
+<!-- Устройство -->
+<section class="s s--board" id="scheme" data-title="Схема">
+  <p class="eyebrow" data-r="0">Схема</p>
+  <h2 data-r="0">Все модули сидят на одной магистрали</h2>
+  <div class="sch">
+    <div class="mod" data-r="2" data-rt="pop"><h3>Процессор</h3><p>«Мозг»: выполняет команды и управляет обменом</p></div>
+    <div class="mod" data-r="3" data-rt="pop"><h3>Оперативная память</h3><p>Хранит программы и данные во время работы</p></div>
+    <div class="mod" data-r="4" data-rt="pop"><h3>Постоянная память</h3><p>BIOS / UEFI — программа запуска компьютера</p></div>
+    <div class="bus sch__bus" data-r="1" data-rt="left" aria-hidden="true">
+      <div class="bl k-data"></div>
+      <div class="bl k-addr"></div>
+      <div class="bl k-ctrl bl--rev"></div>
+    </div>
+    <div class="mod mod--low" data-r="5" data-rt="pop"><h3>Устройства ввода</h3><p>Клавиатура, мышь, микрофон, сканер</p></div>
+    <div class="mod mod--low" data-r="6" data-rt="pop"><h3>Устройства вывода</h3><p>Монитор, принтер, колонки</p></div>
+    <div class="mod mod--low" data-r="7" data-rt="pop"><h3>Внешняя память</h3><p>SSD, жёсткий диск, флешка</p></div>
+  </div>
+  <p class="legend" data-r="8"><span class="key k-data">шина данных</span><span class="key k-addr">шина адреса</span><span class="key k-ctrl">шина управления</span><span class="legend__t">вместе они образуют магистраль</span></p>
+  <details class="notes"><summary>Текст доклада</summary><p>Это главная схема темы. Сначала появляется магистраль — три цветные линии. Затем к ней по очереди подключаются модули: процессор, оперативная память, постоянная память, а за ними — устройства ввода, вывода и внешняя память. Обратите внимание: ни одно устройство не соединено с другим напрямую, все общаются только через магистраль.</p></details>
+</section>
+
+<section class="s s--paper" id="buses" data-title="Три шины">
+  <p class="eyebrow" data-r="0">Из чего состоит магистраль</p>
+  <h2 data-r="0">Магистраль — это три шины</h2>
+  <div class="g3 fill">
+    <article class="card card--top k-data" data-r="1">
+      <h3 class="tint">Шина данных</h3>
+      <p>Передаёт <b>сами данные</b>: числа, символы, команды программ.</p>
+      <div class="dir" aria-hidden="true"><span>ЦП</span><div class="dir__line"><i class="dot"></i><i class="dot dot--back"></i></div><span>модули</span></div>
+      <p class="dir__cap">в обе стороны</p>
+      <p class="note">Разрядность — сколько бит идёт за раз: 8 → 16 → 32 → 64 бит. Шире шина — быстрее обмен.</p>
+    </article>
+    <article class="card card--top k-addr" data-r="2">
+      <h3 class="tint">Шина адреса</h3>
+      <p>Передаёт <b>адрес</b> — номер ячейки памяти или устройства, к которому обращаются.</p>
+      <div class="dir" aria-hidden="true"><span>ЦП</span><div class="dir__line"><i class="dot"></i></div><span>модули</span></div>
+      <p class="dir__cap">от процессора</p>
+      <p class="note">Число линий определяет, сколько памяти может «увидеть» процессор.</p>
+    </article>
+    <article class="card card--top k-ctrl" data-r="3">
+      <h3 class="tint">Шина управления</h3>
+      <p>Передаёт <b>сигналы-команды</b>: «чтение», «запись», «готов», прерывания, такты.</p>
+      <div class="dir" aria-hidden="true"><span>ЦП</span><div class="dir__line"><i class="dot"></i><i class="dot dot--back"></i></div><span>модули</span></div>
+      <p class="dir__cap">в обе стороны</p>
+      <p class="note">Говорит модулям, <b>что</b> делать с адресом и данными и <b>когда</b>.</p>
+    </article>
+  </div>
+  <details class="notes"><summary>Текст доклада</summary><p>Магистраль — это не один провод, а три группы линий. Шина данных переносит сами данные и работает в обе стороны. Шина адреса указывает, куда именно обращаемся — номер ячейки памяти; она идёт от процессора. Шина управления передаёт служебные сигналы: читать или записывать, готово ли устройство, прерывания. Удобная аналогия с почтой: адрес на конверте — шина адреса, письмо — шина данных, пометка «доставить» или «забрать» — шина управления.</p></details>
+</section>
+
+<!-- Как работает -->
+<section class="s s--board" id="mail" data-title="Как письмо">
+  <p class="eyebrow" data-r="0">Простыми словами</p>
+  <h2 data-r="0">Три шины — как отправка письма</h2>
+  <div class="g3 fill">
+    <article class="card mailc k-addr" data-r="1">
+      <svg class="mailc__pic" viewBox="0 0 160 112" role="img" aria-label="Конверт"><rect x="4" y="4" width="152" height="104" rx="10" class="pf"/><path d="M8 10 L80 62 L152 10" class="ps"/><rect x="96" y="76" width="48" height="20" rx="4" class="pk"/></svg>
+      <h3>Адрес на конверте</h3>
+      <p>Куда доставить: «улица Памяти, дом 1024»</p>
+      <span class="pill">шина адреса</span>
+    </article>
+    <article class="card mailc k-data" data-r="2">
+      <svg class="mailc__pic" viewBox="0 0 160 112" role="img" aria-label="Письмо"><rect x="30" y="4" width="100" height="104" rx="8" class="pf"/><rect x="46" y="24" width="68" height="8" rx="4" class="pk"/><rect x="46" y="44" width="68" height="8" rx="4" class="pk"/><rect x="46" y="64" width="50" height="8" rx="4" class="pk"/><rect x="46" y="84" width="60" height="8" rx="4" class="pk"/></svg>
+      <h3>Само письмо</h3>
+      <p>Что внутри: число, буква, кусочек фото или музыки</p>
+      <span class="pill">шина данных</span>
+    </article>
+    <article class="card mailc k-ctrl" data-r="3">
+      <svg class="mailc__pic" viewBox="0 0 160 112" role="img" aria-label="Штамп"><rect x="24" y="6" width="112" height="100" rx="10" class="ps ps--dash"/><path d="M52 58 L72 78 L110 36" class="ps ps--bold"/></svg>
+      <h3>Пометка почтальону</h3>
+      <p>Что сделать: «доставить» (записать) или «забрать» (прочитать)</p>
+      <span class="pill">шина управления</span>
+    </article>
+  </div>
+  <details class="notes"><summary>Текст доклада</summary><p>Три шины проще всего понять на примере обычной почты. Чтобы письмо дошло, нужны три вещи. Адрес на конверте — куда доставить: это шина адреса, она указывает номер ячейки памяти. Само письмо — то, что передаём: это шина данных. И пометка для почтальона — доставить или забрать: это шина управления, она говорит, записывать данные или читать. Все три работают вместе, как одна посылка.</p></details>
+</section>
+
+<section class="s s--paper" id="cycle" data-title="Чтение и запись">
+  <p class="eyebrow" data-r="0">Как это работает</p>
+  <h2 data-r="0">Как процессор читает и записывает данные</h2>
+  <div class="cyc" id="cyc" data-r="1">
+    <div class="cyc__top">
+      <div class="cyc__box cyc__cpu" id="cyc-cpu"><h3>Процессор</h3><code class="cell" id="cyc-reg">регистр: —</code></div>
+      <div class="cyc__box cyc__ram" id="cyc-ram"><h3>Память (ОЗУ)</h3><code class="cell" id="cyc-c1">[1024] = 42</code><code class="cell" id="cyc-c2">[2048] = 0</code></div>
+    </div>
+    <div class="cyc__lanes">
+      <div class="lane k-addr"><span class="lane__name">Шина адреса</span><div class="lane__line"></div><div class="lane__run"><b class="lane__pk"></b></div></div>
+      <div class="lane k-ctrl"><span class="lane__name">Шина управления</span><div class="lane__line"></div><div class="lane__run"><b class="lane__pk"></b></div></div>
+      <div class="lane k-data"><span class="lane__name">Шина данных</span><div class="lane__line"></div><div class="lane__run"><b class="lane__pk"></b></div></div>
+    </div>
+    <div class="cyc__status">
+      <span class="cyc__mode" id="cyc-mode">Чтение</span>
+      <ol class="cyc__dots" id="cyc-dots" aria-hidden="true"><li></li><li></li><li></li><li></li></ol>
+      <div class="cyc__ctl">
+        <button class="btn" type="button" id="cyc-prev" aria-label="Предыдущий шаг"><svg class="ic"><use href="#i-prev"/></svg></button>
+        <button class="btn" type="button" id="cyc-play" aria-label="Пауза"><svg class="ic"><use id="cyc-play-ic" href="#i-pause"/></svg></button>
+        <button class="btn" type="button" id="cyc-next" aria-label="Следующий шаг"><svg class="ic"><use href="#i-next"/></svg></button>
+      </div>
+      <p class="cyc__text" id="cyc-text" aria-live="polite">Процессор выставляет на шину адреса номер ячейки: 1024</p>
+    </div>
+  </div>
+  <details class="notes"><summary>Текст доклада</summary><p>Эта схема показывает по шагам, как через магистраль проходит обмен. Цикл чтения: 1) процессор выставляет на шину адреса номер ячейки, 2) по шине управления посылает сигнал «Чтение», 3) память кладёт содержимое ячейки на шину данных, 4) процессор забирает число. Цикл записи: адрес, затем данные, затем сигнал «Запись» — и память сохраняет число. Обратите внимание: в каждый момент работает одна шина, все три действуют согласованно, а управляет обменом процессор.</p></details>
+</section>
+
+<!-- Значение -->
+<section class="s s--paper" id="openarch" data-title="Открытая архитектура">
+  <p class="eyebrow" data-r="0">Значение</p>
+  <h2 data-r="0">Принцип открытой архитектуры</h2>
+  <div class="oa fill">
+    <div class="oa__txt">
+      <p class="oa__lead" data-r="1">В <b>1981 году</b> IBM выпустила IBM PC и опубликовала описание его шины и разъёмов. Любая фирма могла делать для него свои платы.</p>
+      <p class="callout k-data" data-r="2">На материнской плате есть <b>слоты расширения</b> — разъёмы, подключённые к шине.</p>
+      <p class="callout k-addr" data-r="3">Компьютер собирается как <b>конструктор</b> — под свою задачу и бюджет.</p>
+    </div>
+    <div class="mb" data-r="1" aria-hidden="true">
+      <div class="mb__top">
+        <div class="mb__cpu">CPU</div>
+        <div class="mb__ram"><i></i><i></i><i></i><i></i></div>
+        <span class="mb__lbl">ОЗУ</span>
+      </div>
+      <div class="slot"><span class="xcard k-data" data-r="4" data-rt="drop">Видеокарта</span></div>
+      <div class="slot"><span class="xcard k-addr" data-r="6" data-rt="drop">Звуковая карта</span></div>
+      <div class="slot"><span class="xcard k-ctrl" data-r="8" data-rt="drop">Сетевая карта</span></div>
+      <p class="mb__cap">слоты расширения, подключённые к шине</p>
+    </div>
+  </div>
+  <details class="notes"><summary>Текст доклада</summary><p>Магистрально-модульный принцип сделал возможной открытую архитектуру. В 1981 году IBM опубликовала описание шины своего компьютера IBM PC. Благодаря этому любая фирма могла выпускать платы расширения — видеокарты, звуковые карты, сетевые карты. Их вставляют в слоты на материнской плате, которые подключены к шине. На схеме платы по очереди «вставляются» в слоты. Именно поэтому компьютер можно собрать как конструктор.</p></details>
+</section>
+
+<section class="s s--board" id="value" data-title="Преимущества">
+  <p class="eyebrow" data-r="0">Значение принципа</p>
+  <h2 data-r="0">Преимущества магистрально-модульного принципа</h2>
+  <div class="val fill">
+    <div class="val__list">
+      <article class="card rowc" data-r="1"><svg class="ic k-data"><use href="#i-wrench"/></svg><h3>Модульность</h3><p>Любой блок меняется отдельно: новая память или диск — без замены всего компьютера. Ремонт проще и дешевле.</p></article>
+      <article class="card rowc" data-r="2"><svg class="ic k-addr"><use href="#i-plus"/></svg><h3>Расширяемость</h3><p>Новые возможности — просто новый модуль в свободном разъёме: видеокарта, Wi-Fi, ещё один диск.</p></article>
+      <article class="card rowc" data-r="3"><svg class="ic k-ctrl"><use href="#i-check"/></svg><h3>Совместимость</h3><p>Единые стандарты шин (PCI Express, USB, SATA): устройства разных фирм работают вместе.</p></article>
+    </div>
+    <article class="feat" data-r="4">
+      <h3>Простота</h3>
+      <div class="feat__pair" aria-hidden="true">
+        <figure><svg class="mesh" id="mesh" viewBox="0 0 200 200"></svg><figcaption><b>45</b> связей</figcaption></figure>
+        <svg class="ic feat__arrow"><use href="#i-right"/></svg>
+        <figure><svg class="mesh" id="onebus" viewBox="0 0 200 200"></svg><figcaption><b>1</b> магистраль</figcaption></figure>
+      </div>
+      <p>10 устройств «каждый с каждым» — это 45 связей. С общей шиной — одна магистраль.</p>
+    </article>
+  </div>
+  <details class="notes"><summary>Текст доклада</summary><p>Почему этот принцип так важен? Первое — модульность: любой блок можно заменить отдельно. Второе — расширяемость: новые возможности добавляются новым модулем. Третье — совместимость: благодаря стандартам шин устройства разных производителей работают вместе. Четвёртое — простота: если соединять 10 устройств каждое с каждым, нужно 10·9/2 = 45 отдельных связей, а с общей магистралью — всего одна шина, к которой подключены все.</p></details>
+</section>
+
+<!-- Польза -->
+<section class="s s--board" id="useful" data-title="Полезно знать">
+  <p class="eyebrow" data-r="0">Полезная информация</p>
+  <h2 data-r="0">Полезно знать каждому пользователю</h2>
+  <div class="g2 fill">
+    <article class="card tip k-data" data-r="1"><p class="tip__fact">Ctrl + Shift + Esc</p><h3>Как посмотреть, что внутри</h3><p>Windows: <b>Диспетчер задач → Производительность</b>. Там видно процессор, память, диск и видеокарту — все модули вашего ПК.</p></article>
+    <article class="card tip k-addr" data-r="2"><p class="tip__fact">DDR4 ≠ DDR5</p><h3>Перед покупкой памяти</h3><p>Проверьте тип: <b>DDR4 и DDR5 не подходят друг к другу</b> — у них разные разъёмы. И посмотрите, есть ли свободный слот.</p></article>
+    <article class="card tip k-ctrl" data-r="3"><p class="tip__fact">USB 3.x — в 10 раз быстрее</p><h3>Разъёмы USB разные</h3><p>USB 2.0 — до 480 Мбит/с, USB 3.x — от 5 Гбит/с. Быстрый порт часто <b>синего цвета</b>.</p></article>
+    <article class="card tip k-none" data-r="4"><p class="tip__fact">HDD → SSD</p><h3>Самый простой апгрейд</h3><p>Замена жёсткого диска на SSD: компьютер включается и открывает программы в разы быстрее. SSD NVMe — ещё быстрее.</p></article>
+  </div>
+  <details class="notes"><summary>Текст доклада</summary><p>Немного полезной практической информации. Чтобы увидеть модули своего компьютера, откройте Диспетчер задач и вкладку «Производительность». Если хотите добавить оперативную память, сначала узнайте её тип: DDR4 и DDR5 физически не совместимы. Разъёмы USB тоже разные: USB 3 примерно в 10 раз быстрее USB 2.0, и такие порты часто синие. А самый заметный и недорогой апгрейд старого компьютера — поставить SSD вместо жёсткого диска.</p></details>
+</section>
+
+<section class="s s--paper" id="life" data-title="Каждый день">
+  <p class="eyebrow" data-r="0">Простыми словами</p>
+  <h2 data-r="0">Где вы встречаете это каждый день</h2>
+  <div class="g2 fill">
+    <article class="card rowc" data-r="1"><svg class="ic k-data"><use href="#i-gauge"/></svg><h3>Ноутбук тормозит</h3><p>Докупили планку памяти и вставили в разъём — компьютер стал быстрее. Остальное не меняли.</p></article>
+    <article class="card rowc" data-r="2"><svg class="ic k-addr"><use href="#i-gamepad"/></svg><h3>Игры стали «тяжелее»</h3><p>Геймер меняет только видеокарту — и новые игры снова идут плавно.</p></article>
+    <article class="card rowc" data-r="3"><svg class="ic k-ctrl"><use href="#i-plug"/></svg><h3>Флешка везде работает</h3><p>Один стандарт USB: флешку, мышь или принтер можно подключить к любому компьютеру.</p></article>
+    <article class="card card--ink rowc" data-r="4"><svg class="ic k-data"><use href="#i-wrench"/></svg><h3>Сломался диск</h3><p>В сервисе меняют только диск, а не весь компьютер. Быстро и намного дешевле.</p></article>
+  </div>
+  <details class="notes"><summary>Текст доклада</summary><p>А теперь — где каждый из нас сталкивается с этим принципом. Ноутбук начал тормозить — докупили память и вставили в разъём. Игры стали требовательнее — поменяли только видеокарту. Флешка подходит к любому компьютеру, потому что у всех одинаковый стандарт USB. Сломался диск — в сервисе меняют только его. Всё это возможно именно потому, что компьютер собран из модулей на общей магистрали.</p></details>
+</section>
+
+<section class="s s--paper" id="meaning" data-title="Что это даёт">
+  <p class="eyebrow" data-r="0">Значение в обычной жизни</p>
+  <h2 data-r="0">Что этот принцип даёт каждому из нас</h2>
+  <div class="rows fill">
+    <article class="card rowc rowc--wide" data-r="1"><svg class="ic k-data"><use href="#i-coins"/></svg><h3>Экономия</h3><p>Улучшаем одну деталь вместо покупки нового компьютера.</p></article>
+    <article class="card rowc rowc--wide" data-r="2"><svg class="ic k-addr"><use href="#i-leaf"/></svg><h3>Экология</h3><p>Меньше электронного мусора: выбрасываем одну деталь, а не весь компьютер.</p></article>
+    <article class="card rowc rowc--wide" data-r="3"><svg class="ic k-ctrl"><use href="#i-users"/></svg><h3>Выбор и цены</h3><p>Детали делают сотни фирм, они конкурируют — и компьютеры дешевеют.</p></article>
+    <article class="card card--ink rowc rowc--wide" data-r="4"><svg class="ic k-data"><use href="#i-car"/></svg><h3>Принцип повсюду</h3><p>Блоки автомобиля связаны общей шиной CAN; так же устроены смартфоны и игровые приставки.</p></article>
+  </div>
+  <details class="notes"><summary>Текст доклада</summary><p>Какое значение этот принцип имеет в обычной жизни? Во-первых, экономия: можно улучшить одну деталь, а не покупать новый компьютер. Во-вторых, экология: меньше электронного мусора. В-третьих, выбор и низкие цены: детали выпускают сотни компаний, и благодаря общим стандартам они совместимы, а конкуренция снижает цены. И наконец, этот принцип используется не только в компьютерах: например, электронные блоки современного автомобиля — двигатель, тормоза, фары — общаются через общую шину CAN.</p></details>
+</section>
+
+<!-- Итоги -->
+<section class="s s--board" id="summary" data-title="Итоги">
+  <p class="eyebrow" data-r="0">Итоги</p>
+  <h2 data-r="0">Главное, что нужно запомнить</h2>
+  <div class="rows fill">
+    <article class="card sum k-data" data-r="1"><p class="sum__k">Устройство</p><p>Компьютер = <b>модули</b> + общая <b>магистраль</b>, состоящая из шин данных, адреса и управления.</p></article>
+    <article class="card sum k-addr" data-r="2"><p class="sum__k">Обмен</p><p>Обмен идёт по шагам: <b>адрес → команда → данные</b>. Управляет им процессор.</p></article>
+    <article class="card sum k-ctrl" data-r="3"><p class="sum__k">Значение</p><p><b>Модульность, расширяемость, совместимость</b> — компьютер можно собрать, починить и улучшить по частям.</p></article>
+  </div>
+  <details class="notes"><summary>Текст доклада</summary><p>Подведём итоги. Первое: компьютер состоит из модулей, соединённых общей магистралью — шинами данных, адреса и управления. Второе: обмен идёт по шагам — адрес, команда, данные, и управляет им процессор. Третье: благодаря этому принципу компьютеры модульные, расширяемые и совместимые — их можно собирать, ремонтировать и улучшать по частям.</p></details>
+</section>
+
+<section class="s s--amber s--end" id="conclusion" data-title="Вывод">
+  <p class="eyebrow" data-r="0">Вывод</p>
+  <h2 class="end__h" data-r="1">Одна общая дорога — для всех устройств</h2>
+  <p class="end__p" data-r="2">Магистрально-модульный принцип превратил компьютер в <b>конструктор</b>: его можно собрать, улучшить и починить по частям. Именно поэтому компьютеры стали <b>доступными каждому</b> и развиваются так быстро.</p>
+  <div class="bus end__bus" data-r="3" data-rt="left" aria-hidden="true">
+    <div class="bl"></div>
+    <div class="bl"></div>
+    <div class="bl bl--rev"></div>
+  </div>
+  <p class="end__bye" data-r="4">Спасибо за внимание! Вопросы?</p>
+  <details class="notes"><summary>Текст доклада</summary><p>Вывод: магистрально-модульный принцип — это идея одной общей дороги для всех устройств компьютера. Благодаря ей компьютер стал конструктором, который можно собрать, улучшить и починить по частям. Поэтому компьютеры стали доступны каждому и так быстро развиваются. Спасибо за внимание! Готов ответить на вопросы.</p></details>
+</section>
+
+</main>
+
+<nav class="rail" aria-label="Слайды">
+  <div class="rail__track">
+    <div class="rail__lines" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="rail__taps" id="taps"></div>
+    <span class="rail__pk" aria-hidden="true"></span>
+  </div>
+  <div class="rail__ctl">
+    <button class="rbtn" type="button" id="b-prev" aria-label="Предыдущий слайд" title="Назад (←)"><svg class="ic"><use href="#i-prev"/></svg></button>
+    <button class="rbtn" type="button" id="b-next" aria-label="Следующий слайд" title="Вперёд (→)"><svg class="ic"><use href="#i-next"/></svg></button>
+    <button class="rbtn" type="button" id="b-notes" aria-label="Текст доклада" aria-pressed="false" title="Текст доклада (N)"><svg class="ic"><use href="#i-notes"/></svg></button>
+    <button class="rbtn" type="button" id="b-full" aria-label="На весь экран" title="На весь экран (F)"><svg class="ic"><use href="#i-full"/></svg></button>
+  </div>
+</nav>
+</div>
+
+</body>
+</html>
